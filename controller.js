@@ -1,5 +1,5 @@
 app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter', 'vcRecaptchaService', 'LanguageService', 'ValidationService', '$sce', function($scope, $timeout, $http, $filter, recaptcha, LanguageService,ValidationService,$sce){
-    $scope.$validationOptions = { debounce: 1500, preValidateFormElements: false };
+    $scope.$validationOptions = { debounce: 1500,};
 
     $scope.amountChangeData = [];
 
@@ -98,6 +98,9 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
         center : {}
     };
     $scope.selected_center = "";
+    $scope.active_form = 4;
+    $scope.active_form = 3;
+    $scope.active_form = 2;
     $scope.active_form = 1;
     $scope.payment_options = [];
     $scope.selected_payment = {};
@@ -116,6 +119,7 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
     $scope.emailEditable = true;
     $scope.disableVerifyBtn = true;
     $scope.sendOtpDisabled = false;
+    $scope.captchaVerified = true;
     // $scope.captchaVerified = true;
     $scope.captchaVerifiedPay = true;
 
@@ -348,7 +352,10 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
                                     $('[href="#payment"]').tab('show');
                                 });
                                 $('.nav-tabs a[href="#payment"]').tab('show');
-                                $scope.active_form = 4;
+			        $scope.active_form = 4;
+			        $scope.active_form = 3;
+			        $scope.active_form = 2;
+			        $scope.active_form = 1;
 
                                 $scope.editable1 = false;
                                 $scope.editable2 = false;
@@ -436,7 +443,10 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
                                     $('[href="#payment"]').tab('show');
                                 });
                                 $('.nav-tabs a[href="#payment"]').tab('show');
-                                $scope.active_form = 4;
+			        $scope.active_form = 4;
+			        $scope.active_form = 3;
+			        $scope.active_form = 2;
+			        $scope.active_form = 1;
 
                                 $scope.editable1 = false;
                                 $scope.editable2 = false;
@@ -496,7 +506,7 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
         };
 
         $scope.loading = true;
-        $http.post(basepath+'/get_payment_options_v2', data, config).then(function(resp){
+        $http.post(basepath+'/pay-slot-time', data, config).then(function(resp){
             $scope.loading = false;
             if(!angular.isUndefined(resp.data)){
                 if(!angular.isUndefined(resp.data.status)){
@@ -690,7 +700,7 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
         $scope.ivacs = [payment[0].ivac];
         $scope.visa_types = [payment[0].visa_type];
         $scope.active_form = 1;
-        $scope.verifyOtp = true;
+        $scope.verifyOtp = false;
         $scope.showAppointData = true;
         $scope.payment[0].otp = '';
     };
@@ -737,10 +747,10 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
                 if(resp.data.code == 200){
                     $scope.payment[0].otp = null;
                     $scope.verifyOtp = true;
-                    $scope.sendOtpDisabled = false;
+                    $scope.sendOtpDisabled = true;
                     $timeout(function() {
                         $scope.sendOtpDisabled = false;
-                    }, 1);
+                    }, 32000);
                 } else {
                     $scope.loading = false;
                     $scope.recaptchaToken = null;
@@ -783,7 +793,8 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
                     $scope.showAppointData = true;
                     $scope.slotDates = resp.data.data.slot_dates;
                 } else {
-                    $scope.showAppointData = true;
+                    $scope.showAppointData = false;
+                    $scope.showAlert('danger', 'Error!', error_reason);
                 }
             } else{
                 $scope.loading = false;
@@ -957,7 +968,10 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
                     $('[href="#personal"]').tab('show');
                 });
                 //$('.nav-tabs a[href="#personal"]').tab('show');
+                $scope.active_form = 4;
+                $scope.active_form = 3;
                 $scope.active_form = 2;
+                $scope.active_form = 1;
                 $scope.editable1 = true;
             }
             else{}
@@ -1021,7 +1035,10 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
                 $('[href="#overview"]').tab('show');
             });
             //$('.nav-tabs a[href="#personal"]').tab('show');
-            $scope.active_form = 3;
+                $scope.active_form = 4;
+                $scope.active_form = 3;
+                $scope.active_form = 2;
+                $scope.active_form = 1;
             $scope.editable2 = true;
             $scope.editable3 = true;
 
@@ -1063,8 +1080,8 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
 
     $scope.editApplication = function(pay){
         var index = -1;
-        $scope.verifyOtp = true;
-        $scope.showAppointData = true;
+        $scope.verifyOtp = false;
+        $scope.showAppointData = false;
         $scope.payment.some(function(obj, i) {
             return obj.web_id === pay.web_id ? index = i : false;
         });
@@ -1447,7 +1464,10 @@ app.controller('payment_application', ['$scope', '$timeout', '$http', '$filter',
 											angular.element('.nav-tabs a[href="#overview"]').trigger('click');
 											$('[href="#overview"]').tab('show');
 										});
+										$scope.active_form = 4;
 										$scope.active_form = 3;
+										$scope.active_form = 2;
+										$scope.active_form = 1;
 									}
 								}
 							}
